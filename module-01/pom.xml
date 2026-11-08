@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.example</groupId>
+		<artifactId>java-apache-avro</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>module-01</artifactId>
+	<name>Module 1: Getting Started</name>
+
+	<dependencies>
+		<!-- Section 1.1: the one dependency the Getting Started guide asks for. -->
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!--
+				Section 1.1: the plugin from the Getting Started guide. It generates example.avro.User from
+				src/main/resources/avro/user.avsc before compilation.
+
+				Two changes from the guide:
+				- The schemas live in src/main/resources/avro instead of the plugin's default, src/main/avro. Files under
+				  resources are copied to target/classes, so the schema is also on the classpath at runtime and is
+				  packaged in the jar. GenericUsersFile loads it from there (section 7).
+				- The guide sets <outputDirectory> to src/main/java. This course leaves it at its default,
+				  target/generated-sources/avro, so generated code is build output and never committed. The plugin adds
+				  that directory to the compile sources itself.
+			-->
+			<plugin>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>schema</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.basedir}/src/main/resources/avro/</sourceDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--
+				Section 1.8: the beta "faster code" feature is switched on with a system property that Avro reads once.
+				The default execution runs every test except CustomCodersTest; a second execution runs only that class,
+				with the property set.
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-test</id>
+						<configuration>
+							<excludes>
+								<exclude>**/CustomCodersTest.java</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>custom-coders</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<test>CustomCodersTest</test>
+							<systemPropertyVariables>
+								<org.apache.avro.specific.use_custom_coders>true</org.apache.avro.specific.use_custom_coders>
+							</systemPropertyVariables>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

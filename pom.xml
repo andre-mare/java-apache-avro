@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.example</groupId>
+	<artifactId>java-apache-avro</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Project: Java Apache Avro</name>
+
+	<modules>
+		<module>module-01</module>
+	</modules>
+
+	<!-- Versions and plugin settings shared by every module. Each module declares the dependencies it uses. -->
+	<properties>
+		<java.version>21</java.version>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<avro.version>1.12.2</avro.version>
+		<junit.version>6.1.3</junit.version>
+		<assertj.version>3.27.7</assertj.version>
+		<!--
+			Avro 1.12.2 only instantiates classes it trusts, and that includes generated classes read with a
+			SpecificDatumReader (Module 1, section 6). The course's generated classes live in these packages.
+		-->
+		<avro.trusted.packages>example.avro</avro.trusted.packages>
+		<!-- Tests that fail on purpose are excluded by default. Override on the command line: -DexcludedGroups=none -->
+		<excludedGroups>expected-failure-tests</excludedGroups>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro</artifactId>
+				<version>${avro.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-core</artifactId>
+				<version>${assertj.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.15.0</version>
+					<configuration>
+						<!-- Keeps parameter names in the bytecode, for readable parameterized test names. -->
+						<parameters>true</parameters>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.5.5</version>
+					<configuration>
+						<systemPropertyVariables>
+							<org.apache.avro.SERIALIZABLE_PACKAGES>${avro.trusted.packages}</org.apache.avro.SERIALIZABLE_PACKAGES>
+						</systemPropertyVariables>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.avro</groupId>
+					<artifactId>avro-maven-plugin</artifactId>
+					<version>${avro.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
