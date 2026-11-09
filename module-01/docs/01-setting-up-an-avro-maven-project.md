@@ -269,27 +269,3 @@ The second test is the important one. If anyone switches the plugin's output to 
 An Avro project is a schema-first project. The schema lives in `src/main/resources/avro`, where both the plugin and the classpath can see it; the generated class lives in `target/generated-sources/avro`, where nobody can edit it; and one system property tells Avro 1.12.2 that your generated package is safe to instantiate. With four small tests guarding that layout, the build can't quietly drift away from it.
 
 Next, [section 1.2](02-defining-an-avro-schema.md) opens the schema itself: records, fields, and the unions with `null` that make a field optional.
-
-> **Run every example yourself**
-> Clone the repository, run `mvn test -pl module-01`, and watch 41 tests pass. Then change the plugin's output directory to `src/main/java` and watch one of them fail.
-> [Get the code on GitHub →](https://github.com/andre-mare/java-apache-avro) · [Module 1 README →](https://github.com/andre-mare/java-apache-avro/blob/main/module-01/README.md)
-
----
-
-**Filed under:** Apache Avro, Module 1: Getting Started
-
-**Tags:** `apache-avro` `maven` `avro-maven-plugin` `code-generation` `java` `junit6` `schemas`
-
-### About the Author
-
-**André Maré** is a Senior Security Architect working on identity and access management for financial services and open banking. He writes example-driven courses in which every concept is a test you can run. The code for this series is at [github.com/andre-mare/java-apache-avro](https://github.com/andre-mare/java-apache-avro).
-
-[GitHub](https://github.com/andre-mare) · [Website](https://andre-mare.github.io)
-
-### Related Articles
-
-- **Apache Avro · Module 1:** [Avro Schemas: Defining a Record with Optional Fields](02-defining-an-avro-schema.md) · 8 November 2026
-- **Apache Avro · Module 1:** [Compiling Avro Schemas: Inside the Generated Java Class](03-compiling-avro-schemas.md) · 8 November 2026
-- **Apache Avro · Module 1:** [Deserializing Avro Data Files: Object Reuse, Utf8 and Trusted Classes](06-deserializing-avro-data-files.md) · 8 November 2026
-
-**References:** [Getting Started (Java)](https://avro.apache.org/docs/++version++/getting-started-java/) · [Download](https://avro.apache.org/docs/++version++/getting-started-java/#download) · [Avro 1.12.2 release notes](https://avro.apache.org/blog/2026/08/12/avro-1.12.2/) · [Java API](https://avro.apache.org/docs/++version++/api/java/)
