@@ -1,6 +1,5 @@
 # Apache Avro in Java: Setting Up a Maven Project That Generates Code from Schemas
 
-
 Most Java libraries arrive as a single dependency and you start calling them. Apache Avro is different: the centre of an Avro project is not Java code but a **schema**, a JSON file that describes your data. From that schema a build plugin generates Java classes, and your code, your tests and every system that reads your data depend on the schema being where the build expects it. Get the project layout right and Avro feels effortless. Get it wrong and you end up with generated code committed next to hand-written code, edits that vanish on the next build, and readers that refuse to load your own classes.
 
 This guide sets up the Maven project behind the [Getting Started (Java)](https://avro.apache.org/docs/++version++/getting-started-java/) guide of Apache Avro 1.12.2, the first section of an example-driven Avro course in which every concept is a JUnit 6 test. You'll add the dependency and the `avro-maven-plugin`, decide where schemas and generated code live and why, run the build, look at what it generated, and write tests that check the build itself.
